@@ -104,9 +104,32 @@ function getCoinLink(symbol, coinSlugs) {
   return `https://coinmarketcap.com/search/?q=${encodeURIComponent(baseToken)}`
 }
 
+function ExchangeLabel({ exchange, logos, logoSize = 16 }) {
+  const logoUrl = logos[String(exchange || '').toLowerCase()]
+
+  return (
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+      {logoUrl ? (
+        <img
+          alt=""
+          src={logoUrl}
+          style={{
+            borderRadius: '3px',
+            height: `${logoSize}px`,
+            objectFit: 'cover',
+            width: `${logoSize}px`,
+          }}
+        />
+      ) : null}
+      <span>{capitalizeExchange(exchange)}</span>
+    </span>
+  )
+}
+
 function App() {
   const [opportunities, setOpportunities] = useState([])
   const [coinSlugs, setCoinSlugs] = useState({})
+  const [exchangeLogos, setExchangeLogos] = useState({})
   const [lastUpdated, setLastUpdated] = useState(null)
   const [isInitialLoading, setIsInitialLoading] = useState(true)
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -182,6 +205,36 @@ function App() {
       isMounted = false
       window.clearInterval(refreshTimer)
       window.clearInterval(countdownTimer)
+    }
+  }, [])
+
+  useEffect(() => {
+    let isMounted = true
+
+    async function fetchExchangeLogos() {
+      try {
+        const response = await fetch(`${API_URL}/api/exchange-logos`)
+
+        if (!response.ok) {
+          return
+        }
+
+        const data = await response.json()
+
+        if (isMounted) {
+          setExchangeLogos(data.logos || {})
+        }
+      } catch {
+        if (isMounted) {
+          setExchangeLogos({})
+        }
+      }
+    }
+
+    fetchExchangeLogos()
+
+    return () => {
+      isMounted = false
     }
   }, [])
 
@@ -327,7 +380,7 @@ function App() {
                     onClick={() => toggleExchange(exchange)}
                     type="button"
                   >
-                    {capitalizeExchange(exchange)}
+                    <ExchangeLabel exchange={exchange} logoSize={14} logos={exchangeLogos} />
                   </button>
                 ))
               ) : (
@@ -413,8 +466,12 @@ function App() {
                             {opportunity.symbol}
                           </a>
                         </td>
-                        <td>{capitalizeExchange(opportunity.buy_exchange)}</td>
-                        <td>{capitalizeExchange(opportunity.sell_exchange)}</td>
+                        <td>
+                          <ExchangeLabel exchange={opportunity.buy_exchange} logos={exchangeLogos} />
+                        </td>
+                        <td>
+                          <ExchangeLabel exchange={opportunity.sell_exchange} logos={exchangeLogos} />
+                        </td>
                         <td>{formatPrice(opportunity.buy_price)}</td>
                         <td>{formatPrice(opportunity.sell_price)}</td>
                         <td>
