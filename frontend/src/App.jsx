@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 
-const API_BASE_URL = 'http://localhost:8000'
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 const REFRESH_SECONDS = 60
 const VOLUME_FILTERS = [
   { label: 'Any', value: 0 },
@@ -128,8 +128,8 @@ function App() {
 
       try {
         const [opportunitiesResponse, marketsResponse] = await Promise.all([
-          fetch(`${API_BASE_URL}/api/opportunities`),
-          fetch(`${API_BASE_URL}/api/markets`),
+          fetch(`${API_URL}/api/opportunities`),
+          fetch(`${API_URL}/api/markets`),
         ])
 
         if (!opportunitiesResponse.ok) {
@@ -190,7 +190,7 @@ function App() {
 
     async function fetchCoinSlugs() {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/coin-slugs`)
+        const response = await fetch(`${API_URL}/api/coin-slugs`)
 
         if (!response.ok) {
           return
