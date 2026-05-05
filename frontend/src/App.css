@@ -233,7 +233,14 @@
 }
 
 .exchange-toggle {
+  align-items: center;
+  background: #161b22;
   color: #8b949e;
+  display: inline-flex;
+  justify-content: center;
+  min-height: 48px;
+  min-width: 48px;
+  padding: 8px;
 }
 
 .exchange-toggle--active {

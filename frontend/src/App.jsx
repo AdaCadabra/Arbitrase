@@ -116,7 +116,7 @@ function ExchangeLabel({ exchange, logos, logoSize = 16, showText = true }) {
           style={{
             borderRadius: '3px',
             height: `${logoSize}px`,
-            objectFit: 'cover',
+            objectFit: 'contain',
             width: `${logoSize}px`,
           }}
         />
@@ -383,7 +383,7 @@ function App() {
                   >
                     <ExchangeLabel
                       exchange={exchange}
-                      logoSize={24}
+                      logoSize={32}
                       logos={exchangeLogos}
                       showText={false}
                     />
