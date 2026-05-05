@@ -104,7 +104,7 @@ function getCoinLink(symbol, coinSlugs) {
   return `https://coinmarketcap.com/search/?q=${encodeURIComponent(baseToken)}`
 }
 
-function ExchangeLabel({ exchange, logos, logoSize = 16 }) {
+function ExchangeLabel({ exchange, logos, logoSize = 16, showText = true }) {
   const logoUrl = logos[String(exchange || '').toLowerCase()]
 
   return (
@@ -121,7 +121,7 @@ function ExchangeLabel({ exchange, logos, logoSize = 16 }) {
           }}
         />
       ) : null}
-      <span>{capitalizeExchange(exchange)}</span>
+      {showText ? <span>{capitalizeExchange(exchange)}</span> : null}
     </span>
   )
 }
@@ -378,9 +378,15 @@ function App() {
                     }
                     key={exchange}
                     onClick={() => toggleExchange(exchange)}
+                    title={capitalizeExchange(exchange)}
                     type="button"
                   >
-                    <ExchangeLabel exchange={exchange} logoSize={14} logos={exchangeLogos} />
+                    <ExchangeLabel
+                      exchange={exchange}
+                      logoSize={24}
+                      logos={exchangeLogos}
+                      showText={false}
+                    />
                   </button>
                 ))
               ) : (
