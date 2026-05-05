@@ -1,5 +1,5 @@
 # Exchanges to monitor
-EXCHANGES = ["binance", "okx", "bybit", "kraken", "kucoin", "gateio"]
+EXCHANGES = ["binance", "okx", "bybit", "kraken", "kucoin", "gateio", "bitget"]
 
 # Only monitor USDT pairs to ensure same asset comparison
 QUOTE_CURRENCY = "USDT"
