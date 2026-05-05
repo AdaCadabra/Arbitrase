@@ -14,6 +14,16 @@ from arbitrage import find_opportunities
 from fetcher import fetch_all_markets
 
 
+EXCHANGE_LOGOS = {
+    "binance": "https://github.com/user-attachments/assets/e9419b93-ccb0-46aa-9bff-c883f096274b",
+    "okx": "https://user-images.githubusercontent.com/1294454/152485636-38b19e4a-bece-4dec-979a-5982859ffc04.jpg",
+    "bybit": "https://github.com/user-attachments/assets/97a5d0b3-de10-423d-90e1-6620960025ed",
+    "kucoin": "https://user-images.githubusercontent.com/51840849/87295558-132aaf80-c50e-11ea-9801-a2fb0c57c799.jpg",
+    "gateio": "https://github.com/user-attachments/assets/64f988c5-07b6-4652-b5c1-679a6bf67c85",
+    "bitget": "https://github.com/user-attachments/assets/fbaa10cc-a277-441d-a5b7-997dd9a87658",
+}
+
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -203,6 +213,11 @@ async def get_coin_slugs():
     except Exception as exc:
         logger.exception("Failed to return coin slugs: %s", exc)
         return {"slugs": {}, "ambiguous": []}
+
+
+@app.get("/api/exchange-logos")
+async def get_exchange_logos():
+    return {"logos": dict(EXCHANGE_LOGOS)}
 
 
 @app.get("/health")
